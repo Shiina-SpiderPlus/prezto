@@ -1,4 +1,48 @@
+# fork版について
 自分用にruncoms以下の設定ファイルをpushしておけると便利なのでforkしているリポジトリです。
+
+## 環境移行時の処理
+新しい環境に移行するときに、committer、author、email、merge commitに自動で書かれるリポジトリ名をgit履歴から削除したければ以下のコマンドを実行する。
+
++ committer、author、emailの変更方法
+```bash
+git filter-branch --force --env-filter '
+        # GIT_AUTHOR_NAMEの書き換え
+        if [ "$GIT_AUTHOR_NAME" = "変更したいauthor name" ];
+        then
+                GIT_AUTHOR_NAME="変更後のauthor name";
+        fi
+        # GIT_AUTHOR_EMAILの書き換え
+        if [ "$GIT_AUTHOR_EMAIL" = "変更したいauthor email" ];
+        then
+                GIT_AUTHOR_EMAIL="変更後のauthor email";
+        fi
+        # GIT_COMMITTER_NAMEの書き換え
+        if [ "$GIT_COMMITTER_NAME" = "変更したいcommitter name" ];
+        then
+                GIT_COMMITTER_NAME="変更後のcommitter name";
+        fi
+        # GIT_COMMITTER_EMAILの書き換え
+        if [ "$GIT_COMMITTER_EMAIL" = "変更したいcommitter email" ];
+        then
+                GIT_COMMITTER_EMAIL="変更後のcommitter email";
+        fi
+        ' -- --all
+```
++ merge commitに自動で書かれるリポジトリ名を削除する方法
+```bash
+> git log --oneline | less  # 消したいメッセージを探す
+> git rebase -i --rebase-merges `変更したいcommitの一つ前のcommitのハッシュ値`
+> # rebaseファイルが開くので`merge -C`を`merge -c`に変更して保存
+> # エディタがcommitのメッセージを開くので、不要なリポジトリ名を削除して保存
+> # conflictで怒られたら普通に解消する(vscodeが楽)
+> # 何回か繰り返す
+```
++ remoteにpushする
+```bash
+> git push origin master --force  # forceが大事だからコマンドを必ず実行する。(vscdeを使って同期しない！)
+```
+
 
 # Prezto — Instantly Awesome Zsh
 
