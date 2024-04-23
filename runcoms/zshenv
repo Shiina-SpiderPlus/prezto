@@ -14,3 +14,6 @@ if [[ $(uname) == 'Darwin' ]]; then
   # Homebrew
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+# "$HOME/.cargo/env"が存在すれば実行する
+test -f "$HOME/.cargo/env" && source "$HOME/.cargo/env"

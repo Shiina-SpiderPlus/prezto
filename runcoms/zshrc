@@ -20,13 +20,13 @@ fi
 # Customize to your needs...
 if [[ $(uname) == 'Darwin' ]]; then
   test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+  # Add /opt/homebrew/bin to path
+  export PATH=/opt/homebrew/bin:$PATH
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Add /opt/homebrew/bin to path
-export PATH=/opt/homebrew/bin:$PATH
 # Add nodebrew to path
 export PATH=$HOME/.nodebrew/current/bin:$PATH
 
