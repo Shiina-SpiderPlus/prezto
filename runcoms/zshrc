@@ -75,7 +75,14 @@ bindkey '^q' fzf-cdr
 
 # sshの実行前後にiterm2のprofileを変更する関数
 function ssh() {
-  echo -e "\033]50;SetProfile=$1\a"
+  # $1にshiinaが含まれていない、かつ、$1に'.spider-net.jp'が含まれている場合
+  if [[ $1 != *"shiina"* && $1 == *".spider-net.jp"* ]]; then
+    echo -e "\033]50;SetProfile=SpiderNet\a"
+    # そうでなければ $1 をprofileに設定
+  else
+    echo -e "\033]50;SetProfile=$1\a"
+  fi
+
   command ssh "$@"
   echo -e "\033]50;SetProfile=Default\a"
 }
