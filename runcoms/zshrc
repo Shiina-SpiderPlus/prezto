@@ -75,18 +75,26 @@ bindkey '^q' fzf-cdr
 
 # sshの実行前後にiterm2のprofileを変更する関数
 function ssh() {
-  # $1にshiinaが含まれていない、かつ、$1に'.spider-net.jp'が含まれている場合
-  if [[ $1 != *"shiina"* && $1 == *".spider-net.jp"* ]]; then
-    echo -e "\033]50;SetProfile=SpiderNet\a"
-    # そうでなければ $1 をprofileに設定
-  else
-    echo -e "\033]50;SetProfile=$1\a"
+  if [[ $1 == *".spider-net.jp"* ]]; then
+    if [[ $1 != *".dev."* && $1 != *"test"* ]]; then
+      # 本番環境
+      echo -e "\033]50;SetProfile=SpiderNet\a"
+    else if [[ $1 == *"3dv"* ]]; then
+      # 3dvサーバーのtest,dev環境
+      echo -e "\033]50;SetProfile=3dv-dev\a"
+    else
+      # classicサーバーのtest,dev環境
+      echo -e "\033]50;SetProfile=classic-dev\a"
+    fi
   fi
 
   command ssh "$@"
   echo -e "\033]50;SetProfile=Default\a"
 }
 
+# deno
+export DENO_INSTALL="${HOME}/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
 
 # .zshrc実行後に行いたいカスタマイズ
 source ~/.zshrc_after
